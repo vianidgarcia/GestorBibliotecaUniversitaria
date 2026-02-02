@@ -8,12 +8,12 @@ namespace GestorBibliotecaUniversitaria
 {
     public abstract class Recurso
     {
-        protected int Id { get; set; }
+        protected string Id { get; set; }
         protected string Titulo { get; set; }
         protected int CantidadTotal { get; set; }
         protected int CantidadDisponible { get; set; }
 
-        protected Recurso(int id, string titulo, int cantT)
+        protected Recurso(string id, string titulo, int cantT)
         {
             Id = id;
             Titulo = titulo;
@@ -21,9 +21,11 @@ namespace GestorBibliotecaUniversitaria
             CantidadDisponible = cantT;
         }
 
-        public int GetId() => Id;
+        public string GetId() => Id;
         public string GetTitulo() => Titulo;
         public int GetCantidadDisponible() => CantidadDisponible;
+
+        public int GetCantidadTotal() => CantidadTotal;
         public bool EstaDisponible() => CantidadDisponible != 0;
 
         public void DecrementarDisponibilidad()
@@ -51,7 +53,7 @@ namespace GestorBibliotecaUniversitaria
         private string Autor { get; set; }
         private int Año { get; set; }
 
-        public Libro (int id, string titulo, int cantT, string autor, int año)
+        public Libro (string id, string titulo, int cantT, string autor, int año)
             : base (id, titulo, cantT)
         {
             Autor = autor;
@@ -75,7 +77,7 @@ namespace GestorBibliotecaUniversitaria
     {
         private string Edicion { get; set; }
 
-        public Revista(int id, string titulo, int cantT, string edicion)
+        public Revista(string id, string titulo, int cantT, string edicion)
             : base(id, titulo, cantT)
         {
             Edicion = edicion;
