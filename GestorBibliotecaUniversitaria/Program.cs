@@ -70,6 +70,18 @@ while (!exit)
                         Pausa();
                         break;
                     case "3":
+                        // Registrar Novela
+                        Console.Write("Ingrese el título de la novela: ");
+                        string tituloNovela = Console.ReadLine() ?? "";
+                        Console.Write("Ingrese el autor de la novela: ");
+                        string autorNovela = Console.ReadLine() ?? "";
+                        int anioNovela = LeerEntero("Ingrese el año de publicación: ");
+                        int cantidadCopiasNovela = LeerEntero("Ingrese la cantidad de copias: ");
+                        gestor.RegistrarNovela(tituloNovela, autorNovela, anioNovela, cantidadCopiasNovela);
+                        Console.WriteLine("Novela registrada exitosamente.");
+                        Pausa();
+                        break;
+                    case "4":
                         gestor.MostrarTodosLosRecursos();
                         Pausa();
                         break;

@@ -35,12 +35,12 @@ namespace GestorBibliotecaUniversitaria
         /// </summary>
         public void RegistrarLibro(string titulo, string autor, int año, int cantidad)
         {
-            // Buscar libro existente por título, autor y año (ignorando mayúsculas)
+            // Buscar libro existente por título, autor y año (ignorando mayúsculas y espacios)
             var existente = Recursos
                 .OfType<Libro>()
                 .FirstOrDefault(l =>
-                    string.Equals(l.GetTitulo(), titulo, StringComparison.OrdinalIgnoreCase) &&
-                    string.Equals(l.GetAutor, autor, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(l.GetTitulo().Trim(), titulo.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(l.GetAutor.Trim(), autor.Trim(), StringComparison.OrdinalIgnoreCase) &&
                     l.GetAño == año);
 
             if (existente != null)
@@ -59,15 +59,55 @@ namespace GestorBibliotecaUniversitaria
         }
 
         /// <summary>
-        /// Registra una nueva revista en el sistema
+        /// Registra una nueva revista en el sistema o agrega copias si ya existe
         /// </summary>
         public void RegistrarRevista(string titulo, string edicion, int cantidad)
         {
+            // Buscar revista existente por título y edición (ignorando mayúsculas y espacios)
+            var existente = Recursos
+                .OfType<Revista>()
+                .FirstOrDefault(r =>
+                    string.Equals(r.GetTitulo().Trim(), titulo.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(r.GetEdicion.Trim(), edicion?.Trim() ?? string.Empty, StringComparison.OrdinalIgnoreCase));
+
+            if (existente != null)
+            {
+                existente.AgregarCopias(cantidad);
+                Console.WriteLine($"Revista '{titulo}' edición '{edicion}' ya existente. Se agregaron {cantidad} copias. Total ahora: {existente.GetCantidadTotal()}");
+                return;
+            }
+
             string id = $"R{ContadorRecursos:D3}";
             Revista nuevaRevista = new Revista(id, titulo, cantidad, edicion);
             Recursos.Add(nuevaRevista);
             ContadorRecursos++;
             Console.WriteLine($"Revista '{titulo}' registrada exitosamente con ID: {id}");
+        }
+
+        /// <summary>
+        /// Registra una nueva novela en el sistema o agrega copias si ya existe
+        /// </summary>
+        public void RegistrarNovela(string titulo, string autor, int año, int cantidad)
+        {
+            var existente = Recursos
+                .OfType<Novela>()
+                .FirstOrDefault(n =>
+                    string.Equals(n.GetTitulo().Trim(), titulo.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(n.GetAutor.Trim(), autor.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                    n.GetAño == año);
+
+            if (existente != null)
+            {
+                existente.AgregarCopias(cantidad);
+                Console.WriteLine($"Novela '{titulo}' ya existente. Se agregaron {cantidad} copias. Total ahora: {existente.GetCantidadTotal()}");
+                return;
+            }
+
+            string id = $"R{ContadorRecursos:D3}";
+            Novela nuevaNovela = new Novela(id, titulo, cantidad, autor, año);
+            Recursos.Add(nuevaNovela);
+            ContadorRecursos++;
+            Console.WriteLine($"Novela '{titulo}' registrada exitosamente con ID: {id}");
         }
 
         /// <summary>

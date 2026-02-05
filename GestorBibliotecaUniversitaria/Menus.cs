@@ -34,7 +34,8 @@ namespace GestorBibliotecaUniversitaria
 
             EscribirOpcion("1", "Registrar Libro");
             EscribirOpcion("2", "Registrar Revista");
-            EscribirOpcion("3", "Mostrar Todos los Recursos");
+            EscribirOpcion("3", "Registrar Novela");
+            EscribirOpcion("4", "Mostrar Todos los Recursos");
             EscribirOpcion("0", "Volver al menú anterior");
 
             DibujarPie();

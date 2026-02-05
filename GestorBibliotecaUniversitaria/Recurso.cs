@@ -58,8 +58,9 @@ namespace GestorBibliotecaUniversitaria
 
     public class Libro : Recurso
     { 
-        private string Autor { get; set; }
-        private int Año { get; set; }
+        // Cambiado a protected para permitir herencia (Novela)
+        protected string Autor { get; set; }
+        protected int Año { get; set; }
 
         public Libro (string id, string titulo, int cantT, string autor, int año)
             : base (id, titulo, cantT)
@@ -79,6 +80,24 @@ namespace GestorBibliotecaUniversitaria
 
         public string GetAutor => Autor;
         public int GetAño => Año;
+    }
+
+    // Nueva clase Novela — es un tipo especializado de Libro
+    public class Novela : Libro
+    {
+        public Novela(string id, string titulo, int cantT, string autor, int año)
+            : base(id, titulo, cantT, autor, año)
+        {
+        }
+
+        public override void MostrarInfo()
+        {
+            Console.WriteLine($"[NOVELA] ID: {GetId()}");
+            Console.WriteLine($"  Título: {GetTitulo()}");
+            Console.WriteLine($"  Autor: {GetAutor}");
+            Console.WriteLine($"  Año: {GetAño}");
+            Console.WriteLine($"  Copias: {GetCantidadDisponible()}/{GetCantidadTotal()} disponibles");
+        }
     }
 
     public class Revista : Recurso
