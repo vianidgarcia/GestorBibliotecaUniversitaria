@@ -118,13 +118,53 @@ while (!exit)
                 switch (prestamosOption)
                 {
                     case "1":
-                        gestor.ObtenerTodosLosRecursosResumidos();
-                        Console.Write("Ingrese el Indice del Recurso:");
-                        string nomEst = Console.ReadLine() ?? "";
-                        gestor.ObtenerUsuariosResumidos();
-                        Console.Write("Ingrese el Indice del Usuario:");
-                        string nomProf = Console.ReadLine() ?? "";
-                        gestor.RealizarPrestamo(int.Parse(nomEst), int.Parse(nomProf));
+                        // Mostrar recursos resumidos y pedir índice
+                        var recursosResumidos = gestor.ObtenerTodosLosRecursosResumidos();
+                        if (recursosResumidos.Count == 0)
+                        {
+                            Console.WriteLine("No hay recursos disponibles para préstamo.");
+                            Pausa();
+                            break;
+                        }
+                        Console.WriteLine("Recursos disponibles:");
+                        foreach (var linea in recursosResumidos)
+                        {
+                            Console.WriteLine(linea);
+                        }
+                        Console.Write("Ingrese el Índice del Recurso (número): ");
+                        string entradaRecurso = Console.ReadLine() ?? "";
+                        if (!int.TryParse(entradaRecurso, out int indiceRecursoUsuario))
+                        {
+                            Console.WriteLine("Índice de recurso inválido.");
+                            Pausa();
+                            break;
+                        }
+                        int indiceRecurso = indiceRecursoUsuario - 1; // convertir a 0-based
+
+                        // Mostrar usuarios resumidos y pedir índice
+                        var usuariosResumidos = gestor.ObtenerUsuariosResumidos();
+                        if (usuariosResumidos.Count == 0)
+                        {
+                            Console.WriteLine("No hay usuarios registrados para realizar el préstamo.");
+                            Pausa();
+                            break;
+                        }
+                        Console.WriteLine("\nUsuarios registrados:");
+                        foreach (var linea in usuariosResumidos)
+                        {
+                            Console.WriteLine(linea);
+                        }
+                        Console.Write("Ingrese el Índice del Usuario (número): ");
+                        string entradaUsuario = Console.ReadLine() ?? "";
+                        if (!int.TryParse(entradaUsuario, out int indiceUsuarioUsuario))
+                        {
+                            Console.WriteLine("Índice de usuario inválido.");
+                            Pausa();
+                            break;
+                        }
+                        int indiceUsuario = indiceUsuarioUsuario - 1; // convertir a 0-based
+
+                        gestor.RealizarPrestamo(indiceRecurso, indiceUsuario);
                         Pausa();
                         break;
                     case "2":
