@@ -31,10 +31,26 @@ namespace GestorBibliotecaUniversitaria
         #region Gestión de Recursos
 
         /// <summary>
-        /// Registra un nuevo libro en el sistema
+        /// Registra un nuevo libro en el sistema o agrega copias si ya existe
         /// </summary>
         public void RegistrarLibro(string titulo, string autor, int año, int cantidad)
         {
+            // Buscar libro existente por título, autor y año (ignorando mayúsculas)
+            var existente = Recursos
+                .OfType<Libro>()
+                .FirstOrDefault(l =>
+                    string.Equals(l.GetTitulo(), titulo, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(l.GetAutor, autor, StringComparison.OrdinalIgnoreCase) &&
+                    l.GetAño == año);
+
+            if (existente != null)
+            {
+                // Si existe, agregar copias al inventario en lugar de crear un nuevo recurso
+                existente.AgregarCopias(cantidad);
+                Console.WriteLine($"Libro '{titulo}' ya existente. Se agregaron {cantidad} copias. Total ahora: {existente.GetCantidadTotal()}");
+                return;
+            }
+
             string id = $"R{ContadorRecursos:D3}";
             Libro nuevoLibro = new Libro(id, titulo, cantidad, autor, año);
             Recursos.Add(nuevoLibro);

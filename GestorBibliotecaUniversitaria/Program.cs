@@ -10,6 +10,23 @@ static void Pausa()
     Console.ReadKey(true);
 }
 
+// Helper simple para leer enteros de forma segura (evita excepciones por formato)
+static int LeerEntero(string mensaje, int valorPorDefecto = 0)
+{
+    while (true)
+    {
+        Console.Write(mensaje);
+        string? entrada = Console.ReadLine();
+        if (int.TryParse(entrada, out int resultado))
+        {
+            return resultado;
+        }
+
+        // Si el usuario no ingresa nada o ingresa texto inválido, repetir la solicitud
+        Console.WriteLine("Entrada inválida. Por favor ingrese un número entero válido.");
+    }
+}
+
 bool exit = false;
 while (!exit)
 {
@@ -32,10 +49,8 @@ while (!exit)
                         string tituloLibro = Console.ReadLine() ?? "";
                         Console.Write("Ingrese el autor del libro: ");
                         string autorLibro = Console.ReadLine() ?? "";
-                        Console.Write("Ingrese el año de publicación: ");
-                        int anioPublicacionLibro = int.Parse(Console.ReadLine() ?? "0");
-                        Console.Write("Ingrese la cantidad de copias: ");
-                        int cantidadCopiasLibro = int.Parse(Console.ReadLine() ?? "0");
+                        int anioPublicacionLibro = LeerEntero("Ingrese el año de publicación: ");
+                        int cantidadCopiasLibro = LeerEntero("Ingrese la cantidad de copias: ");
                         gestor.RegistrarLibro(tituloLibro, autorLibro, anioPublicacionLibro, cantidadCopiasLibro);
                         Console.WriteLine("Libro registrado exitosamente.");
                         Pausa();
@@ -49,8 +64,7 @@ while (!exit)
                         {
                             numeroEdicion = "";
                         }
-                        Console.Write("Ingrese la cantidad de copias: ");
-                        int cantidadCopiasRevista = int.Parse(Console.ReadLine() ?? "0");
+                        int cantidadCopiasRevista = LeerEntero("Ingrese la cantidad de copias: ");
                         gestor.RegistrarRevista(tituloRevista, numeroEdicion, cantidadCopiasRevista);
                         Console.WriteLine("Revista registrada exitosamente.");
                         Pausa();

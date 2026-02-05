@@ -44,6 +44,14 @@ namespace GestorBibliotecaUniversitaria
             }
         }
 
+        // Nuevo método público para agregar copias al inventario
+        public void AgregarCopias(int cantidad)
+        {
+            if (cantidad <= 0) return;
+            CantidadTotal += cantidad;
+            CantidadDisponible += cantidad;
+        }
+
         public abstract void MostrarInfo();
         
     }
